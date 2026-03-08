@@ -1,0 +1,6 @@
+﻿fastapi
+uvicorn
+pypdf
+httpx
+python-multipart
+neo4j

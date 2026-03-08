@@ -1,0 +1,322 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CropRAG Portfolio</title>
+    <link rel="stylesheet" href="/static/styles.css?v=20260308b" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="#hero">
+          <span class="brand-mark">CR</span>
+          <span class="brand-copy">
+            <strong>CropRAG</strong>
+            <small>Research Portfolio System</small>
+          </span>
+        </a>
+        <nav class="topnav">
+          <a href="#workspace">工作台</a>
+          <a href="#story">架构说明</a>
+        </nav>
+      </header>
+
+      <section id="hero" class="hero">
+        <div class="hero-copy-block">
+          <p class="eyebrow">Graduate AI Application Project</p>
+          <h1>农作物分类论文智能检索助手</h1>
+          <p class="hero-copy">
+            围绕真实农作物分类论文构建的 AI 应用作品集项目，覆盖 PDF 解析、检索增强问答、
+            实体关系抽取、Neo4j 图谱检索和本地部署演示。
+          </p>
+          <div class="hero-actions">
+            <a class="cta" href="#workspace">进入工作台</a>
+            <a class="cta ghost" href="#story">查看架构与亮点</a>
+          </div>
+
+          <div class="hero-metrics">
+            <article class="metric-card">
+              <span>论文语料</span>
+              <strong id="hero-documents">0 PDFs</strong>
+              <p>真实农作物分类论文集</p>
+            </article>
+            <article class="metric-card">
+              <span>图谱规模</span>
+              <strong><span id="hero-entities">0</span> / <span id="hero-relations">0</span></strong>
+              <p>实体 / 关系</p>
+            </article>
+            <article class="metric-card">
+              <span>系统状态</span>
+              <strong id="hero-status-copy">待初始化</strong>
+              <p>RAG 与图谱联动</p>
+            </article>
+          </div>
+        </div>
+
+        <aside class="hero-side">
+          <article class="hero-terminal hero-terminal-main">
+            <p class="mini-label">Live Stack</p>
+            <h2>Kimi + TF-IDF + Neo4j</h2>
+            <ul class="terminal-list">
+              <li>本地 PDF 切分与证据检索</li>
+              <li>中文问题改写与英文论文召回</li>
+              <li>实体关系抽取与图谱增强问答</li>
+            </ul>
+          </article>
+
+          <div class="hero-terminal-grid">
+            <article class="hero-terminal hero-terminal-note">
+              <p class="mini-label">Question Example</p>
+              <strong>常见农作物分类模型有哪些？</strong>
+              <p>返回答案、来源片段和图谱事实，不是纯聊天壳子。</p>
+            </article>
+            <article class="hero-terminal hero-terminal-note soft">
+              <p class="mini-label">Portfolio Value</p>
+              <strong>端到端 AI 应用项目</strong>
+              <p>能完整讲清数据、后端、模型调用、检索、图谱和部署。</p>
+            </article>
+          </div>
+        </aside>
+      </section>
+
+      <section class="signal-strip">
+        <article class="signal-card">
+          <span>01</span>
+          <strong>真实论文数据</strong>
+          <p>直接读取本地 PDF 论文目录，建立可引用的检索索引。</p>
+        </article>
+        <article class="signal-card">
+          <span>02</span>
+          <strong>双路径检索</strong>
+          <p>片段检索负责证据召回，图谱检索负责关系补充和解释。</p>
+        </article>
+        <article class="signal-card">
+          <span>03</span>
+          <strong>可观测进度</strong>
+          <p>索引构建与建图过程都暴露实时进度、阶段和当前文件。</p>
+        </article>
+        <article class="signal-card">
+          <span>04</span>
+          <strong>作品集展示</strong>
+        </article>
+      </section>
+
+      <main id="workspace" class="workspace-grid">
+        <section class="panel control-panel">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">Control Room</p>
+              <h2>构建与状态</h2>
+            </div>
+            <span id="health-badge" class="badge">初始化中</span>
+          </div>
+
+          <section class="console-card console-light">
+            <div class="tool-head">
+              <div>
+                <p class="tool-kicker">Vector Retrieval</p>
+                <h3>索引构建</h3>
+              </div>
+              <span class="badge accent">RAG</span>
+            </div>
+
+            <label class="field">
+              <span>论文目录</span>
+              <input id="source-dir" type="text" placeholder="输入 PDF 目录路径" />
+            </label>
+            <div class="inline-fields">
+              <label class="field">
+                <span>Chunk Size</span>
+                <input id="chunk-size" type="number" min="400" max="3000" value="1200" />
+              </label>
+              <label class="field">
+                <span>Overlap</span>
+                <input id="overlap" type="number" min="0" max="800" value="200" />
+              </label>
+            </div>
+            <div class="actions">
+              <button id="build-btn">从目录建立索引</button>
+            </div>
+            <div id="index-progress-card" class="progress-card"></div>
+            <div id="status-card" class="status-card"></div>
+          </section>
+
+          <section class="console-card console-dark">
+            <div class="tool-head">
+              <div>
+                <p class="tool-kicker">Knowledge Graph</p>
+                <h3>实体抽取与建图</h3>
+              </div>
+              <span id="graph-badge" class="badge">未连接</span>
+            </div>
+
+            <div class="inline-fields">
+              <label class="field">
+                <span>每篇抽取 Chunk 数</span>
+                <input id="graph-chunks" type="number" min="2" max="12" value="4" />
+              </label>
+              <label class="field">
+                <span>参与建图文档数</span>
+                <input id="graph-docs" type="number" min="1" max="50" value="17" />
+              </label>
+            </div>
+            <div class="actions">
+              <button id="graph-build-btn">抽实体并建图</button>
+            </div>
+            <div id="graph-progress-card" class="progress-card"></div>
+            <div id="graph-status-card" class="status-card"></div>
+          </section>
+
+          <form id="upload-form" class="upload-box">
+            <label class="field upload-field">
+              <span>上传额外 PDF</span>
+              <input id="pdf-files" type="file" accept=".pdf" multiple />
+            </label>
+            <button class="secondary" type="submit">上传文件</button>
+          </form>
+        </section>
+
+        <section class="panel qa-panel">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">Research QA</p>
+              <h2>图谱增强问答</h2>
+            </div>
+            <span class="badge accent">Kimi + Graph</span>
+          </div>
+
+          <div class="chip-row">
+            <button class="chip" type="button" data-question="这些论文中提到的农作物分类方法和模型有哪些？">分类方法与模型</button>
+            <button class="chip" type="button" data-question="这些论文里常见的数据集和传感器有哪些？">数据集与传感器</button>
+            <button class="chip" type="button" data-question="哪些方法和时序遥感数据关系更强？">时序遥感关系</button>
+          </div>
+
+          <label class="field toggle-row">
+            <span>问答时融合图谱关系</span>
+            <input id="use-graph" type="checkbox" checked />
+          </label>
+          <label class="field">
+            <span>输入问题</span>
+            <textarea id="question" rows="6" placeholder="例如：这些论文中提到的农作物分类方法和模型有哪些？"></textarea>
+          </label>
+          <div class="actions">
+            <button id="ask-btn">生成回答</button>
+          </div>
+
+          <article id="answer" class="answer-card empty">
+            先建立索引，再发起问题检索。这里会显示结构化回答、来源编号和图谱增强结果。
+          </article>
+
+          <div class="evidence-stack">
+            <section>
+              <div class="subhead">
+                <h3>来源片段</h3>
+                <span>Top-K retrieval</span>
+              </div>
+              <div id="sources" class="sources"></div>
+            </section>
+            <section>
+              <div class="subhead">
+                <h3>图谱事实</h3>
+                <span>Entity relations</span>
+              </div>
+              <div id="graph-facts" class="sources"></div>
+            </section>
+          </div>
+        </section>
+      </main>
+
+      <section id="story" class="story-grid">
+        <section class="panel story-panel wide-story">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">System Design</p>
+              <h2>处理链路</h2>
+            </div>
+            <span class="badge">Architecture</span>
+          </div>
+
+          <div class="pipeline-grid">
+            <article class="pipeline-step">
+              <span>Step 1</span>
+              <strong>PDF 输入</strong>
+              <p>从真实农作物分类论文目录读取本地 PDF。</p>
+            </article>
+            <article class="pipeline-step">
+              <span>Step 2</span>
+              <strong>文本抽取与切分</strong>
+              <p>提取每页文本并生成可追溯 chunk。</p>
+            </article>
+            <article class="pipeline-step">
+              <span>Step 3</span>
+              <strong>TF-IDF 检索</strong>
+              <p>召回相关证据片段，保留来源页码和分数。</p>
+            </article>
+            <article class="pipeline-step">
+              <span>Step 4</span>
+              <strong>Kimi 生成回答</strong>
+              <p>整合片段证据并输出结构化回答。</p>
+            </article>
+            <article class="pipeline-step dark-step">
+              <span>Graph A</span>
+              <strong>实体关系抽取</strong>
+              <p>抽取方法、任务、数据集和传感器等实体关系。</p>
+            </article>
+            <article class="pipeline-step dark-step">
+              <span>Graph B</span>
+              <strong>Neo4j 存储</strong>
+              <p>将实体关系写入图数据库，支持结构化查询。</p>
+            </article>
+            <article class="pipeline-step dark-step">
+              <span>Graph C</span>
+              <strong>关系检索增强</strong>
+              <p>中文问题改写后检索图谱，补足语义关系。</p>
+            </article>
+            <article class="pipeline-step dark-step">
+              <span>Graph D</span>
+              <strong>可解释输出</strong>
+              <p>最终答案同时返回图谱事实与来源引用。</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="story-side">
+          <article class="panel story-panel">
+            <div class="section-head">
+              <div>
+                <p class="section-kicker">Runbook</p>
+                <h2>部署说明</h2>
+              </div>
+              <span class="badge">Local Demo</span>
+            </div>
+            <ol class="runbook">
+              <li>配置 <code>ANTHROPIC_BASE_URL</code> 与 <code>ANTHROPIC_API_KEY</code></li>
+              <li>启动 Neo4j：<code>runtime\start_neo4j_harness.ps1</code></li>
+              <li>启动应用：<code>python app.py</code></li>
+              <li>访问 <code>http://127.0.0.1:8010</code></li>
+              <li>如重启 Neo4j，需要重新执行图谱构建</li>
+            </ol>
+          </article>
+
+          <article class="panel story-panel">
+            <div class="section-head">
+              <div>
+                <p class="section-kicker">Resume Ready</p>
+                <h2>项目亮点</h2>
+              </div>
+              <span class="badge">Highlights</span>
+            </div>
+            <ul class="highlight-list">
+              <li>基于真实论文语料的 RAG 与知识图谱增强链路</li>
+              <li>中文问题到英文论文召回的查询改写能力</li>
+              <li>索引构建、建图过程和状态接口可观测</li>
+              <li>适合简历、面试和作品集展示的一体化页面</li>
+            </ul>
+          </article>
+        </section>
+      </section>
+
+    <script src="/static/app.js?v=20260308b"></script>
+  </body>
+</html>
