@@ -1,6 +1,6 @@
 # CropRAG-Research-Assistant
 
-一个面向农作物分类论文场景的 AI 应用开发作品集项目。系统基于真实 PDF 论文数据，完成了从文档解析、检索增强问答，到实体关系抽取、Neo4j 图谱构建和图谱增强回答的完整链路，适合用于简历展示和面试演示。
+一个面向农作物分类论文场景的 AI 应用开发项目。系统基于真实 PDF 论文数据，完成了从文档解析、检索增强问答，到实体关系抽取、Neo4j 图谱构建和图谱增强回答的完整链路。
 
 ## 项目亮点
 
@@ -153,9 +153,8 @@ project-3-kimi-rag-mvp/
 └─ data/
 ```
 
-## 作品集材料
+## 项目材料
 
-- [作品集说明](./docs/PORTFOLIO_GUIDE.md)
 - `docs/screenshots/overview.svg`
 - `docs/screenshots/workspace.svg`
 - `docs/screenshots/architecture.svg`
