@@ -149,15 +149,8 @@ project-3-kimi-rag-mvp/
 ├─ rag_mvp/
 ├─ static/
 ├─ runtime/
-├─ docs/
 └─ data/
 ```
-
-## 项目材料
-
-- `docs/screenshots/overview.svg`
-- `docs/screenshots/workspace.svg`
-- `docs/screenshots/architecture.svg`
 
 ## 项目总结
 
